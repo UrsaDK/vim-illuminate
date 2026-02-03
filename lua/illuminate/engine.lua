@@ -59,33 +59,33 @@ function M.start()
                 require('illuminate.providers.treesitter').detach(details.buf)
 
                 local lang = vim.treesitter.language.get_lang(details.match)
-                if not lang then
+                if not lang or lang == '' then
                     return
                 end
 
                 local ok, query = pcall(require, 'nvim-treesitter.query')
-                if not ok then
+                if not ok or not query then
                     query = vim.treesitter.query
-                    if not query then
-                        return
-                    end
+                    if not query then return end
                 end
 
                 local parsers
                 ok, parsers = pcall(require, 'nvim-treesitter.parsers')
-                if not ok then
-                    local ok, parser = pcall(vim.treesitter.get_parser, details.buf, lang, { error = false })
-                    if not ok or not parser then
-                        return
-                    end
+                if not ok or not parsers then
+                    return
                 end
 
-                if not parsers[lang] then
-                    return false
+                local has_parser = type(parsers.has_parser) == "function"
+                    and parsers.has_parser(lang)            -- nvim-treesitter master
+                    or parsers[lang] ~= nil                 -- nvim-treesitter main
+                if not has_parser then
+                    return
                 end
 
-                local locals = vim.api.nvim_get_runtime_file(string.format('queries/%s/locals.scm', lang), false)
-                if #locals == 0 then
+                local has_locals = type(query.has_locals) == 'function'
+                    and query.has_locals(lang)              -- nvim-treesitter master
+                    or query.get(lang, 'locals') ~= nil     -- nvim-treesitter main
+                if not has_locals then
                     return
                 end
 
