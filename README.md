@@ -6,7 +6,7 @@ https://github.com/user-attachments/assets/fc1487cf-aa19-4238-af23-ab1ac2f5744a
 
 # Quickstart
 
-Install the plugin and things will just work, no configuration needed.
+Install the plugin and things will *just work*, no configuration needed.
 
 When treesitter is not used, or when using the legacy [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) based on the `master` branch, no additional setup is required.
 
