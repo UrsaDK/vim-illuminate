@@ -6,11 +6,37 @@ https://github.com/user-attachments/assets/fc1487cf-aa19-4238-af23-ab1ac2f5744a
 
 # Quickstart
 
-Just install the plugin and things will work *just work*, no configuration needed.
+Install the plugin and things will *just work*, no configuration needed.
 
-You'll also get `<a-n>` and `<a-p>` as keymaps to move between references and `<a-i>` as a textobject for the reference illuminated under the cursor.
+When treesitter is not used, or when using the legacy [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) based on the `master` branch, no additional setup is required.
+
+When using the latest nvim-treesitter based on the `main` branch (the rewritten, incompatible version), this plugin requires one additional dependency: [nvim-treesitter-locals](https://github.com/nvim-treesitter/nvim-treesitter-locals). Ensure it is installed and available in your environment. No further configuration is needed.
+
+In all cases, you'll also get `<a-n>` and `<a-p>` as keymaps to move between references and `<a-i>` as a textobject for the reference illuminated under the cursor.
 
 *Note: Vim users should refer to the [docs](https://github.com/RRethy/vim-illuminate?tab=readme-ov-file#vim-users) for the Vimscript implementation of this plugin.*
+
+# Example
+
+The following [Lazy.nvim](https://lazy.folke.io/) specification shows a minimal setup for using this plugin together with the rewritten nvim-treesitter `main` branch. 
+
+It declares the required treesitter dependencies, loads the plugin on buffer-related events, and applies the default configuration without additional options.
+
+```lua
+return {
+    'RRethy/vim-illuminate',
+    dependencies = {
+        { 'nvim-treesitter/nvim-treesitter' },
+        { 'nvim-treesitter/nvim-treesitter-locals' },
+    },
+    event = { 'BufReadPre', 'BufNewFile' },
+    config = function()
+        require('illuminate').configure({
+            -- see Configuration section below for the list of available options
+        })
+    end,
+}
+```
 
 # Configuration
 
